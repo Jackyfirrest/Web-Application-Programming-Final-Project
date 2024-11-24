@@ -1,0 +1,22 @@
+{
+    "name": "love-bot",
+    "version": "1.0.0",
+    "description": "Love Bot project",
+    "main": "app.js",
+    "scripts": {
+      "start": "node src/app.js",
+      "dev": "nodemon src/app.js"
+    },
+    "dependencies": {
+      "express": "^4.17.1",
+      "node-fetch": "^2.6.1",
+      "cors": "^2.8.5",
+      "body-parser": "^1.19.0"
+    },
+    "devDependencies": {
+      "nodemon": "^2.0.7"
+    },
+    "author": "Your Name",
+    "license": "MIT"
+  }
+  
