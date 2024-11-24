@@ -1,0 +1,72 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+#chat-box {
+    height: 300px;
+    overflow-y: scroll;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.user-message {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.bot-message {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.input-container {
+    display: flex;
+    margin-top: 20px;
+}
+
+input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 15%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-left: 5px;
+    background-color: #007BFF;
+    color: white;
+}
+
+/* 新增的按鈕樣式 */
+.extra-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.extra-buttons button {
+    width: 48%;
+    background-color: #28a745; /* Green for tarot button */
+}
+.extra-buttons button:last-child {
+    background-color: #ffc107; /* Yellow for image button */
+}

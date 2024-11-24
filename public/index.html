@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>戀愛機器人</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>戀愛機器人</h2>
+        <div id="chat-box"></div>
+
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="說些什麼吧..." />
+            <button onclick="sendMessage()">發送</button>
+        </div>
+
+        <!-- 新增的按鈕 -->
+        <div class="extra-buttons">
+            <button onclick="getTarot()">抽塔羅牌</button>
+            <button onclick="generateImage()">生成圖片</button>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
