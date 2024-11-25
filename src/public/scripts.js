@@ -33,9 +33,14 @@ async function getTarot() {
     try {
         // 發送 GET 請求到後端
         const response = await fetch('http://localhost:3000/api/tarot');
-        const data = await response.json();  // 假設返回的是 JSON 格式
-        // 顯示塔羅牌訊息
+        const data = await response.json();  // 返回 JSON 格式
+
+        // 確認後端返回的資料
+        //console.log('塔羅牌回傳資料:', data);
+
+        // 顯示塔羅牌和解釋訊息
         displayMessage(`你抽到的塔羅牌是：${data.card}`, 'bot');
+        displayMessage(`塔羅牌解釋：${data.explanation}`, 'bot');
     } catch (error) {
         console.error('Error fetching tarot card:', error);
         displayMessage('抱歉，無法抽取塔羅牌，請稍後再試。', 'bot');
