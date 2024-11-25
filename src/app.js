@@ -1,3 +1,6 @@
+// 加載 .env api key
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -5,6 +8,8 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+// 設定靜態檔案路徑
+app.use(express.static('public'));
 
 // 路由
 const chatRoute = require('./routes/chat');
