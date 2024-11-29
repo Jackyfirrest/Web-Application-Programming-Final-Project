@@ -72,6 +72,16 @@ button {
     margin-left: 5px;
     background-color: #007BFF;
     color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3394fc;
+}
+
+button:active {
+    background-color: #1960ac;
+    color: white;
 }
 
 /* 新增的按鈕樣式 */
@@ -85,6 +95,26 @@ button {
     width: 48%;
     background-color: #28a745; /* Green for tarot button */
 }
+
+.extra-buttons button:hover {
+    background-color: #27cd4d;
+}
+
+.extra-buttons button:active {
+    background-color: #009322;
+    color: white;
+}
+
 .extra-buttons button:last-child {
     background-color: #ffc107; /* Yellow for image button */
+}
+
+.extra-buttons button:last-child:hover {
+    background-color: #ffd146;
+    color: #444444;
+}
+
+.extra-buttons button:last-child:active {
+    background-color: #bf8f00;
+    color: white;
 }

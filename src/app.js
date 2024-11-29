@@ -1,26 +1,38 @@
-// 加載 .env api key
-require('dotenv').config();
-
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+const { createServer: createViteServer } = require('vite');
+const path = require('path');
 
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-// 設定靜態檔案路徑
-app.use(express.static('public'));
+(async () => {
+    const app = express();
 
-// 路由
-const chatRoute = require('./routes/chat');
-const tarotRoute = require('./routes/tarot');
-const imageRoute = require('./routes/image');
+    // Middleware to parse JSON
+    app.use(express.json());
 
-app.use('/api/chat', chatRoute);
-app.use('/api/tarot', tarotRoute);
-app.use('/api/image', imageRoute);
+    // Your API routes
+    const chatRoute = require('./routes/chat');
+    const tarotRoute = require('./routes/tarot');
+    const imageRoute = require('./routes/image');
+    app.use('/api/chat', chatRoute);
+    app.use('/api/tarot', tarotRoute);
+    app.use('/api/image', imageRoute);
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+    // Integrate Vite as middleware
+    const vite = await createViteServer({
+        server: { middlewareMode: true },
+    });
+    app.use(vite.middlewares);
 
-// init-db.js
-// const Database = require('better-sqlite3');
+    // Fallback to index.html for React Router
+    app.use('*', async (req, res, next) => {
+      try {
+          const html = await vite.transformIndexHtml(req.originalUrl, path.resolve(__dirname, '../index.html'));
+          res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+      } catch (e) {
+          vite.ssrFixStacktrace(e);
+          next(e);
+      }
+    });
+
+    // Start the server
+    app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+})();
