@@ -39,6 +39,14 @@ cd love-bot
 npm install
 ```
 
+## Install Database in Local Before Running:
+```
+cd ./src/db
+```
+```
+node init-db.js
+```
+
 ## Start the Server:
 ```
 npm start
