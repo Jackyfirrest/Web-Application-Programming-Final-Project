@@ -16,6 +16,7 @@ love-bot/
 │   │   ├── tarot.js                  # Tarot card API
 │   │   └── image.js                  # Image generation API
 │   ├── db/                           # Database management
+│       ├── character-template.json   # Template for database 
 │   │   └── init-db.js                # Database initialization script
 │   └── public/                       # Frontend static files
 │       ├── style.css                 # CSS stylesheet
