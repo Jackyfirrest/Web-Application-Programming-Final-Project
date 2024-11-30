@@ -1,6 +1,6 @@
 # Love Bot Project
-Project Overview
-This is a love chatbot project that includes features like chatting, tarot card reading, and image generation. It supports voice responses and uses HTML, CSS, and JavaScript for the frontend, while the backend is built with Node.js and SQLite database.
+## Project Overview
+This is a love chatbot project that includes features like chatting, tarot card reading, and image generation. It supports voice responses and uses ReactJS for the frontend, while the backend is built with Node.js and SQLite database.
 
 # Folder Structure
 ```
@@ -27,7 +27,7 @@ love-bot/
 
 # Installation & Usage
 
-## Clone this project:
+## Clone this project
 ```
 git clone https://github.com/IsFolk/love-bot.git
 ```
@@ -35,17 +35,14 @@ git clone https://github.com/IsFolk/love-bot.git
 cd love-bot
 ```
 
-## Install all dependencies:
+## Install all dependencies
 ```
 npm install
 ```
 
-## Start the Backend server:
+## Start the Server
 ```
 npm start
 ```
 
-## Open your browser
-```
-Visit ./love-bot/src/public/index.html to interact with the chatbot.
-```
+**Server usually run at http://localhost:3000**
