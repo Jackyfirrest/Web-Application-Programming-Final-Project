@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { usePollinationsImage } from "@pollinations/react";
+import portrait from './avatars/portrait.png';  // 引入圖片
+
 
 const App = () => {
     const [messages, setMessages] = useState([]); // Chat messages
@@ -116,11 +118,22 @@ const App = () => {
                                 : "image-message"
                         }
                     >
-                        {msg.sender === "image" ? (
-                            <ImageComponent description={msg.text} />
-                        ) : (
-                            msg.text
-                        )}
+                        <div className="message-content">
+                            {msg.sender === "bot" && (
+                                <img
+                                    src = {portrait}
+                                    alt="Bot"
+                                    className="bot-avatar"
+                                />
+                            )}
+                            <div className="message-text">
+                                {msg.sender === "image" ? (
+                                    <ImageComponent description={msg.text} />
+                                ) : (
+                                    msg.text
+                                )}
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>
