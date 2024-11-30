@@ -59,8 +59,6 @@ Type	Description
 - perf: Performance improvements
 - build: Changes affecting the build system or dependencies
 
-
-Common Git Commit Message Format and Examples
 A well-structured Git commit message helps maintain a clear history of changes, making it easier to understand what each commit does and why. Below is a guide to common formats and examples.
 
 ## Examples of Commit Messages
