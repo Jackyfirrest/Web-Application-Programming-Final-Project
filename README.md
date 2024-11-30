@@ -6,21 +6,24 @@ This is a love chatbot project that includes features like chatting, tarot card 
 ```
 love-bot/
 │
-├── src/                      # Source code folder
-│   ├── app.js                # Main server file, sets up Express server
-│   ├── routes/               # Route handlers
-│   │   ├── chat.js           # Chatbot API
-│   │   ├── tarot.js          # Tarot card API
-│   │   └── image.js          # Image generation API
-│   ├── db/                   # Database management
-│   │   └── init-db.js        # Database initialization script
-│   └── public/               # Frontend static files
-│       ├── style.css         # CSS stylesheet
-│       └── script-react.jsx  # Frontend React JavaScript
-├── node_modules/             # Node.js dependencies
-├── .gitignore                # Git ignore file
-├── package.json              # Project dependencies and scripts
-└── README.md                 # This file
+├── src/                              # Source code folder
+│   ├── app.js                        # Main server file, sets up Express server
+│   ├── components/                   # Frontend Components
+│   │   └── AvatarGenerator.jsx       # AvatarGenerator for characters
+│   ├── routes/                       # Route handlers
+│   │   ├── character.js              # Character API
+│   │   ├── chat.js                   # Chatbot API
+│   │   ├── tarot.js                  # Tarot card API
+│   │   └── image.js                  # Image generation API
+│   ├── db/                           # Database management
+│   │   └── init-db.js                # Database initialization script
+│   └── public/                       # Frontend static files
+│       ├── style.css                 # CSS stylesheet
+│       └── script-react.jsx          # Frontend React JavaScript
+├── node_modules/                     # Node.js dependencies
+├── .gitignore                        # Git ignore file
+├── package.json                      # Project dependencies and scripts
+└── README.md                         # This file
 ```
 
 
