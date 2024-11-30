@@ -15,9 +15,8 @@ love-bot/
 │   ├── db/                   # Database management
 │   │   └── init-db.js        # Database initialization script
 │   └── public/               # Frontend static files
-│       ├── index.html        # Chatbot page
 │       ├── style.css         # CSS stylesheet
-│       └── script.js         # Frontend JavaScript
+│       └── script-react.jsx  # Frontend React JavaScript
 ├── node_modules/             # Node.js dependencies
 ├── .gitignore                # Git ignore file
 ├── package.json              # Project dependencies and scripts
@@ -40,12 +39,47 @@ cd love-bot
 npm install
 ```
 
-## Start the Backend server:
+## Start the Server:
 ```
 npm start
 ```
+**Server usually run at http://localhost:3000**
 
-## Open your browser
+# Git Commit Common Type
+
+## Common Types
+Type	Description
+- feat: A new feature
+- fix: A bug fix
+- docs: Documentation changes
+- style: Code style changes (formatting, missing semi-colons, etc.)
+- refactor: Code refactoring without changing functionality
+- test: Adding or modifying tests
+- chore: Miscellaneous tasks (build scripts, tooling changes)
+- perf: Performance improvements
+- build: Changes affecting the build system or dependencies
+
+A well-structured Git commit message helps maintain a clear history of changes, making it easier to understand what each commit does and why. Below is a guide to common formats and examples.
+
+## Examples of Commit Messages
+### New Feature:
 ```
-Visit ./love-bot/src/public/index.html to interact with the chatbot.
+feat(payment): add support for PayPal integration
+```
+
+### Bug Fix:
+```
+fix(api): resolve issue with user data fetching
+```
+### Documentation Update:
+```
+docs: update README with setup instructions
+```
+### Code Refactoring:
+```
+refactor: simplify user authentication logic
+```
+### Code Style Changes:
+```
+style: fix indentation in app.js
 ```
