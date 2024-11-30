@@ -1,5 +1,5 @@
 # Love Bot Project
-Project Overview
+## Project Overview
 This is a love chatbot project that includes features like chatting, tarot card reading, and image generation. It supports voice responses and uses HTML, CSS, and JavaScript for the frontend, while the backend is built with Node.js and SQLite database.
 
 # Folder Structure
