@@ -12,9 +12,12 @@ const path = require('path');
     const chatRoute = require('./routes/chat');
     const tarotRoute = require('./routes/tarot');
     const imageRoute = require('./routes/image');
+    const characterRoute = require('./routes/character');
+    
     app.use('/api/chat', chatRoute);
     app.use('/api/tarot', tarotRoute);
     app.use('/api/image', imageRoute);
+    app.use('/api/character', characterRoute);
 
     // Integrate Vite as middleware
     const vite = await createViteServer({

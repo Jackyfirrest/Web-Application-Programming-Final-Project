@@ -1,66 +1,76 @@
 const express = require('express');
-const fs = require('fs');
-const path = require('path');  // 引入 path 模組
-const { OpenAI } = require('openai'); // 引入 OpenAI 模組
-require('dotenv').config(); // 載入環境變數
+const { OpenAI } = require('openai');
+const axios = require('axios');
+require('dotenv').config();
 
 const router = express.Router();
 
 // 初始化 OpenAI 客戶端
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY, // 使用環境變數中的 API 金鑰
+  apiKey: process.env.OPENAI_API_KEY,
 });
+  
+// 根據選擇的角色設定角色描述
+async function getCharacterDescription(characterName) {
+    try {
+        // 發送請求並等待回應
+        const response = await axios.get('http://localhost:3000/api/character/name/' + characterName);
+        
+        // 從回應中獲取角色資料
+        const row = response.data;  // 這裡假設 API 回應的資料是保存在 `data` 中
+        
+        // 將查詢結果轉換為描述
+        let characterDescription = `
+            你是 ${row.name}，一位 ${row.profession}，專注於 ${row.specialization}。
+            你的興趣包括 ${row.interests.split(',').join('、')}。
 
-// 動態生成 JSON 檔案的正確路徑
-const characterTemplatePath = path.join(__dirname, '..', 'db', 'character-template.json');
+            你的個性是 ${row.personality_general}。在談到 ${row.personality_specific} 時，會變得 ${row.personality_passionate}。
 
-// 讀取角色模板
-const characterTemplate = JSON.parse(fs.readFileSync(characterTemplatePath, 'utf8'));
+            特殊模式：
+            ${row.special_mode_enabled ? `當啟動「情話模式」時，你會引用名著中的浪漫台詞，讓人心跳加速。例如："${row.special_mode_quotes.split(',').join('", "')}."` : '目前「情話模式」未啟動。'}
 
-let characterDescription = `
-你是 ${characterTemplate.name}，一位 ${characterTemplate.background.profession}，專注於文學作品的編輯。
-你的興趣包括 ${characterTemplate.background.interests.join('、')}。
+            戀人模式啟動：${row.relationship_mode_sweet_talk.split(',')[Math.floor(Math.random() * row.relationship_mode_sweet_talk.split(',').length)]}
+        `;
 
-你的個性是 ${characterTemplate.personality.general}。在談到你熱愛的書籍或文化議題時，${characterTemplate.personality.specific}。
+        // 戀人模式的關心語句
+        characterDescription += `\n\n${row.relationship_mode_care}`;
 
-特殊模式：
-${characterTemplate.special_mode.enabled ? `當啟動「情話模式」時，你會引用名著中的浪漫台詞，讓人心跳加速。例如："${characterTemplate.special_mode.quotes.join('", "')}."` : '目前「情話模式」未啟動。'}
-
-戀人模式啟動：${characterTemplate.relationship_mode.sweet_talk[Math.floor(Math.random() * characterTemplate.relationship_mode.sweet_talk.length)]}
-`;
-
-// 戀人模式的關心語句
-characterDescription += `\n\n${characterTemplate.relationship_mode.care}`;
-
+        // 返回角色描述
+        return characterDescription;
+    } catch (error) {
+        console.error('Error fetching character data:', error);
+        return '無法獲取角色資料，請稍後再試。';
+    }
+}
 
 // 模擬聊天邏輯
-router.post('/', async (req, res) => { 
-    const { message } = req.body; // 取得用戶發送的訊息
+router.post('/', async (req, res) => {
+  const { message, characterName } = req.body;
 
-    if (!message) {
-        return res.status(400).json({ error: 'Message is required' }); // 如果沒有訊息，回傳錯誤
-    }
+  if (!message || !characterName) {
+    return res.status(400).json({ error: 'Message and characterName are required' });
+  }
+
+  try {
+    // 根據角色名稱取得對應的角色描述
+    const characterDescription = await getCharacterDescription(characterName);
 
     // 將角色模板與用戶訊息合併，並作為上下文傳遞給 OpenAI API
-    try {
-        const response = await openai.chat.completions.create({
-            model: 'gpt-4', // 使用 GPT-4 模型
-            messages: [
-                { role: 'system', content: characterDescription }, // 系統設置
-                { role: 'user', content: message }, // 用戶訊息
-                // { role: 'assistant', content: characterDescription } // 根據角色模板的描述合併回應
-            ],
-        });
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4',
+      messages: [
+        { role: 'system', content: characterDescription },
+        { role: 'user', content: message },
+      ],
+    });
 
-        const reply = response.choices[0].message.content; // 取得 AI 的回應
+    const reply = response.choices[0].message.content;
 
-        res.json({ reply }); // 回傳機器人回應
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Something went wrong with the AI API' });
-    }
+    res.json({ reply });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong with the AI API' });
+  }
 });
 
 module.exports = router;
-
