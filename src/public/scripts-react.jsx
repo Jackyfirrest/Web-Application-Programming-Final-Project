@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { createRoot } from 'react-dom/client'
+import { useState } from "react";
+import { createRoot } from "react-dom/client";
+import { usePollinationsImage } from "@pollinations/react";
 
 const App = () => {
     const [messages, setMessages] = useState([]); // Chat messages
@@ -16,69 +17,88 @@ const App = () => {
         if (input.trim() === "") return;
 
         // Add user message to the chat
-        setMessages(prev => [...prev, { text: input, sender: "user" }]);
+        setMessages((prev) => [...prev, { text: input, sender: "user" }]);
         setInput(""); // Clear input field
 
         try {
             // Send user message to backend
-            const response = await fetch('http://localhost:3000/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+            const response = await fetch("http://localhost:3000/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: input }),
             });
             const data = await response.json();
 
             // Add bot response to the chat
-            setMessages(prev => [...prev, { text: data.reply, sender: "bot" }]);
+            setMessages((prev) => [...prev, { text: data.reply, sender: "bot" }]);
         } catch (error) {
-            console.error('Error fetching chat reply:', error);
-            setMessages(prev => [...prev, { text: "抱歉，無法處理您的訊息，請稍後再試。", sender: "bot" }]);
+            console.error("Error fetching chat reply:", error);
+            setMessages((prev) => [
+                ...prev,
+                { text: "抱歉，無法處理您的訊息，請稍後再試。", sender: "bot" },
+            ]);
         }
     };
 
-    // Function to handle getting a tarot card
+    // Function to get a tarot card
     const getTarot = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/tarot');
+            const response = await fetch("http://localhost:3000/api/tarot");
             const data = await response.json();
 
             // Add tarot card and explanation to the chat
-            setMessages(prev => [
+            setMessages((prev) => [
                 ...prev,
                 { text: `你抽到的塔羅牌是：${data.card}`, sender: "bot" },
                 { text: `塔羅牌解釋：${data.explanation}`, sender: "bot" },
             ]);
         } catch (error) {
-            console.error('Error fetching tarot card:', error);
-            setMessages(prev => [...prev, { text: "抱歉，無法抽取塔羅牌，請稍後再試。", sender: "bot" }]);
+            console.error("Error fetching tarot card:", error);
+            setMessages((prev) => [
+                ...prev,
+                { text: "抱歉，無法抽取塔羅牌，請稍後再試。", sender: "bot" },
+            ]);
         }
     };
 
     // Function to generate an image
-    const generateImage = async () => {
+    const generateImage = () => {
         if (input.trim() === "") return;
 
-        try {
-            const response = await fetch('http://localhost:3000/api/image', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ description: input }),
-            });
-            const data = await response.json();
+        setMessages((prev) => [
+            ...prev,
+            { text: "這是根據你的描述生成的圖片：", sender: "bot" },
+            { text: input, sender: "image" }, // Temporarily store the description
+        ]);
+    };
 
-            if (data.image_url) {
-                setMessages(prev => [
-                    ...prev,
-                    { text: `這是根據你的描述生成的圖片：`, sender: "bot" },
-                    { text: data.image_url, sender: "image" },
-                ]);
-            } else {
-                setMessages(prev => [...prev, { text: "無法生成圖片，請再試一次。", sender: "bot" }]);
-            }
-        } catch (error) {
-            console.error('Error generating image:', error);
-            setMessages(prev => [...prev, { text: "抱歉，無法生成圖片，請稍後再試。", sender: "bot" }]);
-        }
+    const ImageComponent = ({ description }) => {
+        // Generate image based on user input
+        const imageUrl = usePollinationsImage(description, {
+            width: 1024,
+            height: 1024,
+            seed: 4,
+            model: "flux",
+            nologo: true,
+        });
+
+        return (
+            <div>
+                {imageUrl ? (
+                    <img
+                        src={imageUrl}
+                        alt="Generated image"
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "contain",
+                        }}
+                    />
+                ) : (
+                    <p>Loading...</p>
+                )}
+            </div>
+        );
     };
 
     return (
@@ -88,10 +108,16 @@ const App = () => {
                 {messages.map((msg, index) => (
                     <div
                         key={index}
-                        className={msg.sender === "user" ? "user-message" : "bot-message"}
+                        className={
+                            msg.sender === "user"
+                                ? "user-message"
+                                : msg.sender === "bot"
+                                ? "bot-message"
+                                : "image-message"
+                        }
                     >
                         {msg.sender === "image" ? (
-                            <img src={msg.text} alt="Generated" />
+                            <ImageComponent description={msg.text} />
                         ) : (
                             msg.text
                         )}
