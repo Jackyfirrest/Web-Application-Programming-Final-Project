@@ -15,9 +15,8 @@ love-bot/
 │   ├── db/                   # Database management
 │   │   └── init-db.js        # Database initialization script
 │   └── public/               # Frontend static files
-│       ├── index.html        # Chatbot page
 │       ├── style.css         # CSS stylesheet
-│       └── script.js         # Frontend JavaScript
+│       └── script-react.jsx  # Frontend React JavaScript
 ├── node_modules/             # Node.js dependencies
 ├── .gitignore                # Git ignore file
 ├── package.json              # Project dependencies and scripts
