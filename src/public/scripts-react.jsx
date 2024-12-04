@@ -108,6 +108,7 @@ const App = () => {
 
     // Function to generate an image
     const generateImage = () => {
+        setInput(""); // Clear input field
         if (input.trim() === "") return;
 
         setMessages((prev) => [
@@ -118,7 +119,6 @@ const App = () => {
     };
 
     const ImageComponent = ({ description }) => {
-        setInput(""); // Clear input field
         // Generate image based on user input
         const imageUrl = usePollinationsImage(description, {
             width: 1024,
