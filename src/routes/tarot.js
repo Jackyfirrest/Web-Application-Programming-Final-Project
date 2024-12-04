@@ -88,7 +88,7 @@ router.get('/', async (req, res) => {
     //console.log("選中的塔羅牌:", selectedCard);
 
     // 呼叫 Gemini API 生成解釋
-    const prompt = `請幫我用繁體中文解釋這張塔羅牌，必須包含愛情、事業、今日運勢，最後要有總結與建議: ${selectedCard.card}`;
+    const prompt = `我是你的情侶，請幫我用繁體中文解釋這張塔羅牌，必須包含愛情、事業、今日運勢，最後要有總結與建議: ${selectedCard.card}`;
     try {
         const result = await model.generateContent(prompt);
         const explanation = result.response.text();
