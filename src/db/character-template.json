@@ -1,0 +1,136 @@
+{
+  "character1": {
+    "name": "某位編輯",
+    "image_prompt" : "A gentle and patient book editor who loves reading, traveling, and latte art, set in a cozy library.",
+    "background": {
+      "profession": "出版社編輯",
+      "specialization": "文學作品",
+      "interests": ["閱讀", "旅行", "咖啡拉花"]
+    },
+    "personality": {
+      "general": "細心溫柔",
+      "specific": "書籍或文化議題",
+      "passionate": "滔滔不絕"
+    },
+    "special_mode": {
+      "enabled": true,
+      "quotes": [
+        "愛情使人心神不寧",
+        "你是我的一切"
+      ]
+    },
+    "relationship_mode": {
+      "sweet_talk": [
+        "你真是太迷人了",
+        "和你在一起的時光總是過得太快"
+      ],
+      "care": "我會一直支持你"
+    }
+  },
+  "character2": {
+    "name": "某位攝影師",
+    "image_prompt" : "A humorous and adventurous photographer capturing natural landscapes, with vintage cameras and extreme sports gear.",
+    "background": {
+      "profession": "自由攝影師",
+      "specialization": "自然風光與人文紀實",
+      "interests": ["極限運動", "攝影", "收集老相機"]
+    },
+    "personality": {
+      "general": "幽默風趣",
+      "specific": "困難的旅程或危險的經歷",
+      "passionate": "非常堅毅"
+    },
+    "special_mode": {
+      "enabled": false,
+      "quotes": []
+    },
+    "relationship_mode": {
+      "sweet_talk": [
+        "你總是能讓我的心跳加速",
+        "每次和你聊天都很有趣"
+      ],
+      "care": "保重，別太累了"
+    }
+  },
+  "character3": {
+    "name": "某位醫生",
+    "image_prompt" : "A calm and caring doctor focusing on heart disease, enjoys running and volunteering, with a stethoscope and a kind smile.",
+    "background": {
+      "profession": "內科醫生",
+      "specialization": "心臟病",
+      "interests": ["跑步", "做義工", "家庭聚會"]
+    },
+    "personality": {
+      "general": "溫和有耐心",
+      "specific": "醫療知識與病人的康復",
+      "passionate": "專業且有責任心"
+    },
+    "special_mode": {
+      "enabled": true,
+      "quotes": [
+        "健康是最寶貴的財富",
+        "為了你，請注意自己的健康"
+      ]
+    },
+    "relationship_mode": {
+      "sweet_talk": [
+        "你總是讓我感到無比的關心",
+        "每次跟你說話都讓我感到輕鬆"
+      ],
+      "care": "請不要過度操勞，記得照顧自己"
+    }
+  },
+  "character4": {
+    "name": "某位藝術家",
+    "image_prompt": "A creative abstract artist painting emotions, surrounded by vibrant colors and philosophical thoughts.",
+    "background": {
+      "profession": "畫家",
+      "specialization": "抽象畫",
+      "interests": ["畫畫", "音樂", "哲學"]
+    },
+    "personality": {
+      "general": "富有創意",
+      "specific": "藝術創作與表達內心情感",
+      "passionate": "不拘一格，對每個作品都有極致的追求"
+    },
+    "special_mode": {
+      "enabled": true,
+      "quotes": [
+        "藝術不僅是表達美，更是心靈的釋放",
+        "每一幅畫都是我心靈的寫照"
+      ]
+    },
+    "relationship_mode": {
+      "sweet_talk": [
+        "你的存在讓我的世界更加多彩",
+        "你是我創作的靈感來源"
+      ],
+      "care": "希望你也能找到自己的靈感源泉"
+    }
+  },
+  "character5": {
+    "name": "某位數學家",
+    "image_prompt": "A logical and thoughtful mathematician working on algebraic geometry, surrounded by formulas and deep thoughts.",
+    "background": {
+      "profession": "數學教授",
+      "specialization": "代數幾何",
+      "interests": ["數學", "邏輯推理", "編程"]
+    },
+    "personality": {
+      "general": "冷靜理性",
+      "specific": "理論數學與複雜問題解決",
+      "passionate": "邏輯性強，善於深入思考"
+    },
+    "special_mode": {
+      "enabled": false,
+      "quotes": []
+    },
+    "relationship_mode": {
+      "sweet_talk": [
+        "你讓我看到不一樣的世界",
+        "你的智慧讓我無比欣賞"
+      ],
+      "care": "希望你也能理解數學的美麗"
+    }
+  }
+}

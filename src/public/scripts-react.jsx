@@ -1,16 +1,59 @@
-import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { usePollinationsImage } from "@pollinations/react";
+import portrait from './avatars/portrait.png';  // 引入圖片
+import React, { useState, useEffect, useRef } from "react";
+import axios from 'axios';
+import AvatarGenerator from "../components/AvatarGenerator"; // 引入 AvatarGenerator
+
 
 const App = () => {
     const [messages, setMessages] = useState([]); // Chat messages
     const [input, setInput] = useState(""); // User input
+    const [selectedCharacter, setSelectedCharacter] = useState(0); // Selected character (bot, editor, photographer, etc.)
+    const [characters, setCharacters] = useState({}); // Character data from JSON
+    const [avatar, setAvatar] = useState(portrait); // Avatar image
+    const [characterImagePrompt, setCharacterImagePrompt] = useState(""); // Image prompt for character
+    const [selectedName, setSelectedName] = useState("某位編輯"); // Selected character name
+    const [generate, setGenerate] = useState(false); // 控制是否顯示 Avatar
+
+    const handleGenerateAvatar = () => {
+        setGenerate(true); // 點擊按鈕時觸發生成
+    };
+
+
+
+    useEffect(() => {
+        // 請求 API 獲取名字
+        axios.get('http://localhost:3000/api/character')
+          .then(response => {
+            setCharacters(response.data); // 設置名字列表
+          })
+          .catch(error => {
+            console.error('Error fetching names:', error);
+          });
+    }, []); // 空依賴數組，表示只在組件掛載時請求一次
+
+    useEffect(() => {
+        console.log(characters[selectedCharacter]);
+        console.log(selectedCharacter);
+
+        if(selectedCharacter && characters) {
+            const character = characters[selectedCharacter];
+            // 提取該角色的 image_prompt
+            const imagePrompt = character ? character.image_prompt : 'No image prompt available';
+            const name = character ? character.name : '某位編輯';
+            setCharacterImagePrompt(imagePrompt);
+            setSelectedName(name);
+        }
+    }, [selectedCharacter, characters]);
+
 
     const handleKeyDown = (event) => {
         if (event.key === "Enter") {
             sendMessage();
         }
     };
+
 
     // Function to handle sending messages
     const sendMessage = async () => {
@@ -21,16 +64,18 @@ const App = () => {
         setInput(""); // Clear input field
 
         try {
-            // Send user message to backend
+            // Based on the selected character, send the message differently
+            let responseText = "";
             const response = await fetch("http://localhost:3000/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: input }),
+                body: JSON.stringify({ message: input, characterName: selectedName }),
             });
             const data = await response.json();
-
-            // Add bot response to the chat
-            setMessages((prev) => [...prev, { text: data.reply, sender: "bot" }]);
+            responseText = data.reply;
+            
+            // Add response based on the selected character
+            setMessages((prev) => [...prev, { text: responseText, sender: "bot" }]);
         } catch (error) {
             console.error("Error fetching chat reply:", error);
             setMessages((prev) => [
@@ -101,9 +146,27 @@ const App = () => {
         );
     };
 
-    return (
+    
+        return (
         <div className="container">
             <h2>戀愛機器人</h2>
+
+            {/* Role Selection Dropdown */}
+            <div>
+                <label htmlFor="character-select">選擇角色:</label>
+                <select
+                    id="character-select"
+                    value={selectedCharacter}
+                    onChange={(e) => setSelectedCharacter(e.target.value)}
+                >
+                    {Object.keys(characters).map((key) => (
+                        <option key={key} value={key}>
+                            {characters[key].name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
             <div id="chat-box">
                 {messages.map((msg, index) => (
                     <div
@@ -116,11 +179,20 @@ const App = () => {
                                 : "image-message"
                         }
                     >
-                        {msg.sender === "image" ? (
-                            <ImageComponent description={msg.text} />
-                        ) : (
-                            msg.text
-                        )}
+                        <div className="message-content">
+                            {msg.sender === "bot" && (
+                                <>
+                                {characterImagePrompt && <AvatarGenerator prompt={characterImagePrompt} />}
+                                </>
+                            )}
+                            <div className="message-text">
+                                {msg.sender === "image" ? (
+                                    <ImageComponent description={msg.text} />
+                                ) : (
+                                    msg.text
+                                )}
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>
