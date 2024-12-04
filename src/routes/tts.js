@@ -7,14 +7,14 @@ const textToSpeech = require('@google-cloud/text-to-speech');
 const fs = require('fs');
 const util = require('util');
 
-// process.env.GOOGLE_APPLICATION_CREDENTIALS = './tts_api_key.json'; // 確保這裡指向您的 JSON 文件路徑
+process.env.GOOGLE_APPLICATION_CREDENTIALS = './tts_api_key.json'; // 確保這裡指向您的 JSON 文件路徑
 
 const client = new textToSpeech.TextToSpeechClient();
 
 router.post('/synthesize', async (req, res) => {
     const text = '你今天過的還好嗎寶貝';
     const { role } = req.body;
-    console.log(req.body);
+    console.log(req.body);c
 
     //驗證參數非空值
     if (!role) {
