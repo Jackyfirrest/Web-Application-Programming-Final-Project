@@ -8,6 +8,7 @@ import axios from 'axios';
 const App = () => {
     const [selectedCharacter, setSelectedCharacter] = useState(null);
     const [characters, setCharacters] = useState({});
+    const [characterImageUrl, setCharacterImageUrl] = useState("");
 
     useEffect(() => {
         axios.get('http://localhost:3000/api/character')
@@ -22,8 +23,8 @@ const App = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<CharacterSelection characters={characters} setSelectedCharacter={setSelectedCharacter} />} />
-                <Route path="/chat" element={<ChatPage selectedCharacter={selectedCharacter} characters={characters} />} />
+                <Route path="/" element={<CharacterSelection characters={characters} setSelectedCharacter={setSelectedCharacter} setCharacterImageUrl={setCharacterImageUrl} />} />
+                <Route path="/chat" element={<ChatPage selectedCharacter={selectedCharacter} characters={characters} characterImageUrl={characterImageUrl} />} />
             </Routes>
         </Router>
     );

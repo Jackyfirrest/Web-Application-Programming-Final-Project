@@ -2,7 +2,7 @@ import React from 'react';
 import AvatarGenerator from './AvatarGenerator';
 import ImageComponent from './ImageComponent';
 
-const ChatBox = ({ messages, characterImagePrompt }) => {
+const ChatBox = ({ messages, characterImagePrompt, characterImageUrl }) => {
     return (
         <div id="chat-box">
             {messages.map((msg, index) => (
@@ -19,7 +19,15 @@ const ChatBox = ({ messages, characterImagePrompt }) => {
                     <div className="message-content">
                         {msg.sender === "bot" && (
                             <>
-                            {characterImagePrompt && <AvatarGenerator prompt={characterImagePrompt} />}
+                                {characterImageUrl ? (
+                                    <img
+                                        src={characterImageUrl}
+                                        alt="Avatar"
+                                        style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "50%" }}
+                                    />
+                                ) : (
+                                    characterImagePrompt && <AvatarGenerator prompt={characterImagePrompt} />
+                                )}
                             </>
                         )}
                         <div className="message-text">

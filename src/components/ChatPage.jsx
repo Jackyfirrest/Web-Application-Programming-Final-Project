@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import AvatarGenerator from "./AvatarGenerator";
 import ChatBox from "./ChatBox";
 import InputContainer from "./InputContainer";
 import axios from 'axios';
 
-const ChatPage = ({ selectedCharacter, characters }) => {
+const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
     const [characterImagePrompt, setCharacterImagePrompt] = useState("");
@@ -84,10 +83,12 @@ const ChatPage = ({ selectedCharacter, characters }) => {
     return (
         <div className="container">
             <h2>戀愛機器人</h2>
+            <h3>跟 {selectedName} 交談吧 !</h3>
 
             <ChatBox
                 messages={messages}
                 characterImagePrompt={characterImagePrompt}
+                characterImageUrl={characterImageUrl}
             />
 
             <InputContainer

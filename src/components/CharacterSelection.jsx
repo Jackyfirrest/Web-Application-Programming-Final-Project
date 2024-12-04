@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ImageComponent from './ImageComponent';
 
-const CharacterSelection = ({ characters, setSelectedCharacter }) => {
+const CharacterSelection = ({ characters, setSelectedCharacter, setCharacterImageUrl }) => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
-    const handleSelectCharacter = (key) => {
+    const handleSelectCharacter = (key, imageUrl) => {
         setSelectedCharacter(key);
+        setCharacterImageUrl(imageUrl);
         navigate('/chat');
     };
 
@@ -24,13 +27,9 @@ const CharacterSelection = ({ characters, setSelectedCharacter }) => {
                             width: '150px',
                             textAlign: 'center'
                         }}
-                        onClick={() => handleSelectCharacter(key)}
+                        onClick={() => handleSelectCharacter(key, character.image_url)}
                     >
-                        <img
-                            src={character.image_url || 'default-avatar.png'}
-                            alt={character.name}
-                            style={{ width: '100%', borderRadius: '8px' }}
-                        />
+                        <ImageComponent description={character.image_prompt} setLoading={setLoading} />
                         <h3>{character.name}</h3>
                     </div>
                 );
