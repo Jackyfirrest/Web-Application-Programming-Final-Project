@@ -108,6 +108,7 @@ const App = () => {
 
     // Function to generate an image
     const generateImage = () => {
+        setInput(""); // Clear input field
         if (input.trim() === "") return;
 
         setMessages((prev) => [
