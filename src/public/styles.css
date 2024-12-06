@@ -122,7 +122,6 @@ button:active {
 .message-content {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
 }
 
 .bot-avatar {
