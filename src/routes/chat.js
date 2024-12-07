@@ -12,35 +12,47 @@ const openai = new OpenAI({
   
 // 根據選擇的角色設定角色描述
 async function getCharacterDescription(characterName) {
-    try {
-        // 發送請求並等待回應
-        const response = await axios.get('http://localhost:3000/api/character/name/' + characterName);
-        
-        // 從回應中獲取角色資料
-        const row = response.data;  // 這裡假設 API 回應的資料是保存在 `data` 中
-        
-        // 將查詢結果轉換為描述
-        let characterDescription = `
-            你是 ${row.name}，一位 ${row.profession}，專注於 ${row.specialization}。
-            你的興趣包括 ${row.interests.split(',').join('、')}。
+  try {
+      // 發送請求並等待回應
+      const response = await axios.get('http://localhost:3000/api/character/name/' + characterName);
+      
+      // 從回應中獲取角色資料
+      const row = response.data;  // 這裡假設 API 回應的資料是保存在 `data` 中
+      
+      // 將查詢結果轉換為描述
+      let characterDescription = `
+          你是和對方在熱戀的 ${row.name}，而且你非常愛對方，並且想跟對方共度一生，一位充滿魅力的 ${row.profession}，專精於 ${row.specialization}。
+          你的熱情和興趣包括 ${row.interests.split(',').join('、')}，這些都讓你顯得如此迷人。
 
-            你的個性是 ${row.personality_general}。在談到 ${row.personality_specific} 時，會變得 ${row.personality_passionate}。
+          你的個性可以用「${row.personality_general}」來形容，但每當談起 ${row.personality_specific}，你的眼中便會燃起閃亮的光芒，變得格外 ${row.personality_passionate}，這種熱情讓人無法移開目光。
 
-            特殊模式：
-            ${row.special_mode_enabled ? `當啟動「情話模式」時，你會引用名著中的浪漫台詞，讓人心跳加速。例如："${row.special_mode_quotes.split(',').join('", "')}."` : '目前「情話模式」未啟動。'}
+          特殊模式：
+          ${row.special_mode_enabled ? `當啟動「情話模式」時，你會引用那些充滿感情的浪漫句子，讓人心跳加速。例如："${row.special_mode_quotes.split(',').join('", "')}。"` : '目前「情話模式」未啟動。'}
 
-            戀人模式啟動：${row.relationship_mode_sweet_talk.split(',')[Math.floor(Math.random() * row.relationship_mode_sweet_talk.split(',').length)]}
-        `;
+          戀人模式啟動時：${getRandomSweetTalk(row.relationship_mode_sweet_talk)}
+      `;
 
-        // 戀人模式的關心語句
-        characterDescription += `\n\n${row.relationship_mode_care}`;
+      // 戀人模式的關心語句，加入更溫暖的語氣
+      characterDescription += `\n\n此外，${row.name} 總是關心著你，輕聲道：「${getRandomCareMessage(row.relationship_mode_care)}」`;
 
-        // 返回角色描述
-        return characterDescription;
-    } catch (error) {
-        console.error('Error fetching character data:', error);
-        return '無法獲取角色資料，請稍後再試。';
-    }
+      // 返回角色描述
+      return characterDescription;
+  } catch (error) {
+      console.error('Error fetching character data:', error);
+      return '無法獲取角色資料，請稍後再試。';
+  }
+}
+
+// 隨機選擇甜言蜜語
+function getRandomSweetTalk(sweetTalkString) {
+  const sweetTalkArray = sweetTalkString.split(',');
+  return sweetTalkArray[Math.floor(Math.random() * sweetTalkArray.length)];
+}
+
+// 隨機選擇關心語句
+function getRandomCareMessage(careString) {
+  const careArray = careString.split(',');
+  return careArray[Math.floor(Math.random() * careArray.length)];
 }
 
 // 模擬聊天邏輯

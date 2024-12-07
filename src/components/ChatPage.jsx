@@ -32,18 +32,32 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
         setInput("");
 
         try {
-            let responseText = "";
-            const response = await fetch("http://localhost:3000/api/chat", {
+            // 抓取ai的回覆
+            const chatResponse = await fetch("http://localhost:3000/api/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: input, characterName: selectedName }),
             });
-            const data = await response.json();
-            responseText = data.reply;
+            const chatData = await chatResponse.json();
+            const responseText = chatData.reply;
 
+            // 更新訊息
             setMessages((prev) => [...prev, { text: responseText, sender: "bot" }]);
+
+            // 抓取tts的audio
+            const ttsResponse = await fetch("http://localhost:3000/api/tts/synthesize", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: responseText, role: selectedName }),
+            });
+
+            const ttsData = await ttsResponse.json();
+            if (ttsData.audioContent) {
+                const audio = new Audio(`data:audio/mp3;base64,${ttsData.audioContent}`);
+                audio.play(); // 撥出語音檔
+            }
         } catch (error) {
-            console.error("Error fetching chat reply:", error);
+            console.error("Error in chat or TTS:", error);
             setMessages((prev) => [
                 ...prev,
                 { text: "抱歉，無法處理您的訊息，請稍後再試。", sender: "bot" },
