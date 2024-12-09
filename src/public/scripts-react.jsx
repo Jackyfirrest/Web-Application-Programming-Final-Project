@@ -16,21 +16,45 @@ const App = () => {
                 setCharacters(response.data);
             })
             .catch(error => {
-                console.error('Error fetching names:', error);
+                console.error('Error fetching characters:', error);
             });
     }, []);
 
     return (
         <Router>
-            <Routes>
-                <Route path="/" element={<CharacterSelection characters={characters} setSelectedCharacter={setSelectedCharacter} setCharacterImageUrl={setCharacterImageUrl} />} />
-                <Route path="/chat" element={<ChatPage selectedCharacter={selectedCharacter} characters={characters} characterImageUrl={characterImageUrl} />} />
-            </Routes>
+            <div>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <CharacterSelection
+                                characters={characters}
+                                setSelectedCharacter={setSelectedCharacter}
+                                setCharacterImageUrl={setCharacterImageUrl}
+                                customCard={{
+                                    title: '自訂角色',
+                                    description: '創建屬於你的角色吧！',
+                                    imageUrl: 'https://media.istockphoto.com/id/518552551/photo/male-silhouette-profile-picture-with-question-mark.jpg?s=612x612&w=0&k=20&c=vCJR4RK29efe_TCPtPdhArezQvp1lcyOMAJ80I8hNOA=', // 自定義卡牌圖片
+                                }}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/chat"
+                        element={
+                            <ChatPage
+                                selectedCharacter={selectedCharacter}
+                                characters={characters}
+                                characterImageUrl={characterImageUrl}
+                            />
+                        }
+                    />
+                </Routes>
+            </div>
         </Router>
     );
 };
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
-
 root.render(<App />);

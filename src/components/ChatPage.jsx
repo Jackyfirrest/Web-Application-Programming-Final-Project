@@ -10,12 +10,13 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
     const [selectedName, setSelectedName] = useState("某位編輯");
 
     useEffect(() => {
+        // console.log('selectedCharacter:', selectedCharacter);
         if (selectedCharacter && characters) {
             const character = characters[selectedCharacter];
             const imagePrompt = character ? character.image_prompt : 'No image prompt available';
             const name = character ? character.name : '某位編輯';
             setCharacterImagePrompt(imagePrompt);
-            setSelectedName(name);
+            setSelectedName(selectedCharacter);
         }
     }, [selectedCharacter, characters]);
 
