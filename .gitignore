@@ -3,7 +3,7 @@ node_modules/
 
 # .env API KEY documents
 .env
-
+tts_api_key.json
 
 # SQLite database files
 *.db
