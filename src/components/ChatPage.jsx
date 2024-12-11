@@ -16,6 +16,14 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
     const currentAudioRef = useRef(null);
 
     useEffect(() => {
+        const character = localStorage.getItem("CHARACTER");
+        if (character === null) {
+            alert("沒有選定的角色，將自動跳轉至選擇頁面...");
+            navigate("/");
+        }
+    }, []);
+
+    useEffect(() => {
         if (selectedCharacter && characters) {
             const character = characters[selectedCharacter];
             const imagePrompt = character ? character.image_prompt : "No image prompt available";

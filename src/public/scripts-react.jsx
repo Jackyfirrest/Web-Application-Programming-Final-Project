@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
 import CharacterSelection from "../components/CharacterSelection";
 import ChatPage from "../components/ChatPage";
 import axios from 'axios';
@@ -16,7 +16,7 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        localStorage.setItem("CHARACTER", selectedCharacter);
+        if (selectedCharacter) localStorage.setItem("CHARACTER", selectedCharacter);
     }, [selectedCharacter]);
 
     useEffect(() => {
