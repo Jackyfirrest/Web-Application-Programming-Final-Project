@@ -3,6 +3,7 @@ import { usePollinationsImage } from "@pollinations/react";
 import { Box, Typography } from "@mui/material";
 import { OpenAI } from 'openai';
 
+
 const openai = new OpenAI({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY, // 從環境變數讀取 API 金鑰
   dangerouslyAllowBrowser: true, // 允許在前端使用 OpenAI API
@@ -33,12 +34,15 @@ const ImageComponent = ({ description, setLoading }) => {
     const [loaded, setLoaded] = useState(false);
     const [dots, setDots] = useState("");
     const [translatedDescription, setTranslatedDescription] = useState("");
+
+    console.log(description);
+
     // 翻譯 description 並更新狀態
     useEffect(() => {
         async function fetchTranslation() {
             // setLoading(true);
             const englishText = await translateToEnglish(description);
-            setTranslatedDescription(`You are my spouse, please generate an image of ${englishText}`);
+            setTranslatedDescription(description);
             // setLoading(false);
         }
         fetchTranslation();
@@ -56,7 +60,7 @@ const ImageComponent = ({ description, setLoading }) => {
 
     const handleImageLoad = () => {
         setLoaded(true);
-        setLoaded(false);
+        setLoading(false);
     };
 
     // 點點動畫
