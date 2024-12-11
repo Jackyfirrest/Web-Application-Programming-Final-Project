@@ -1,9 +1,50 @@
 import React, { useState, useEffect } from "react";
 import { usePollinationsImage } from "@pollinations/react";
 import { Box, Typography } from "@mui/material";
+import { OpenAI } from 'openai';
+
+const openai = new OpenAI({
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY, // 從環境變數讀取 API 金鑰
+  dangerouslyAllowBrowser: true, // 允許在前端使用 OpenAI API
+});
+
+// 翻譯函式
+export async function translateToEnglish(description) {
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4', // 使用 GPT-4 模型
+      messages: [
+        { role: 'system', content: 'You are a helpful assistant that translates text to English. If the word I give you is already English, then just return that word.' },
+        { role: 'user', content: description },
+      ],
+    });
+
+    // 返回翻譯結果
+    return completion.choices[0]?.message?.content || 'No response';
+  } catch (error) {
+    console.error('Error:', error);
+    return 'Error translating text';
+  }
+}
+
+
 
 const ImageComponent = ({ description, setLoading }) => {
-    const imageUrl = usePollinationsImage(description, {
+    const [loaded, setLoaded] = useState(false);
+    const [dots, setDots] = useState("");
+    const [translatedDescription, setTranslatedDescription] = useState("");
+    // 翻譯 description 並更新狀態
+    useEffect(() => {
+        async function fetchTranslation() {
+            // setLoading(true);
+            const englishText = await translateToEnglish(description);
+            setTranslatedDescription(`You are my spouse, please generate an image of ${englishText}`);
+            // setLoading(false);
+        }
+        fetchTranslation();
+    }, [description, setLoaded]);
+    
+    const imageUrl = usePollinationsImage(translatedDescription, {
         width: 150,
         height: 150,
         seed: 4,
@@ -11,12 +52,11 @@ const ImageComponent = ({ description, setLoading }) => {
         nologo: true,
     });
 
-    const [loaded, setLoaded] = useState(false);
-    const [dots, setDots] = useState("");
+    
 
     const handleImageLoad = () => {
         setLoaded(true);
-        setLoading(false);
+        setLoaded(false);
     };
 
     // 點點動畫
