@@ -32,7 +32,7 @@ const CharacterSelection = ({ characters, setSelectedCharacter, setCharacterImag
 
     return (
         <div style={styles.container}>
-            {/* 标题 */}
+            {/* 標題 */}
             <h1 style={styles.title}>戀愛機器人</h1>
             {/* 渲染角色卡片 */}
             <div style={styles.cardContainer}>
@@ -50,7 +50,7 @@ const CharacterSelection = ({ characters, setSelectedCharacter, setCharacterImag
                     );
                 })}
 
-                {/* 自定义角色卡片 */}
+                {/* 自定義角色卡片 */}
                 {customCard && (
                     <div style={styles.card} onClick={handleCustomCardClick}>
                         <img src={customCard.imageUrl} alt="Custom Card" style={styles.image} />
@@ -60,7 +60,7 @@ const CharacterSelection = ({ characters, setSelectedCharacter, setCharacterImag
                 )}
             </div>
 
-            {/* 自定义角色 Modal */}
+            {/* 自定義角色 Modal */}
             {showModal && (
                 <div style={styles.overlay}>
                     <div style={styles.modal}>
@@ -102,7 +102,7 @@ const styles = {
         justifyContent: 'center',
         padding: '20px',
         minHeight: '100vh',
-        background: 'linear-gradient(to bottom, #FFC1CC, #FF9999)', // 粉色渐变背景
+        background: 'linear-gradient(to bottom, #FFC1CC, #FF9999)', // 粉色漸變背景
     },
     title: {
         fontFamily: "'Noto Sans TC', sans-serif",
@@ -132,14 +132,14 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        height: '260px', // 确保高度一致
+        height: '260px', // 確保高度一致
     },
     image: {
         width: '100%',
         height: '120px',
-        objectFit: 'contain', // 使用 `contain` 确保图片保持原比例
+        objectFit: 'contain', // 使用 `contain` 確保圖片保持原比例
         borderRadius: '8px',
-        backgroundColor: '#FFE4E1', // 为小图片添加背景色
+        backgroundColor: '#FFE4E1', // 為小圖片添加背景色
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -191,11 +191,11 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-between',
         marginTop: '15px',
-        gap: '10px', // 添加间距
+        gap: '10px', // 添加間距
     },
     button: {
         flex: 1,
-        padding: '10px', // 统一按钮内边距
+        padding: '10px', // 統一按鈕内邊距
         backgroundColor: '#FF6F61',
         color: 'white',
         border: 'none',

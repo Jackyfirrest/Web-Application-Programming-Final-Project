@@ -11,6 +11,15 @@ const App = () => {
     const [characterImageUrl, setCharacterImageUrl] = useState("");
 
     useEffect(() => {
+        const character = localStorage.getItem("CHARACTER");
+        if (character !== null) setSelectedCharacter(character);
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("CHARACTER", selectedCharacter);
+    }, [selectedCharacter]);
+
+    useEffect(() => {
         axios.get('http://localhost:3000/api/character')
             .then(response => {
                 setCharacters(response.data);
