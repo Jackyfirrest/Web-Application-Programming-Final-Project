@@ -33,22 +33,11 @@ export async function translateToEnglish(description) {
 const ImageComponent = ({ description, setLoading }) => {
     const [loaded, setLoaded] = useState(false);
     const [dots, setDots] = useState("");
-    const [translatedDescription, setTranslatedDescription] = useState("");
 
     console.log(description);
 
-    // 翻譯 description 並更新狀態
-    useEffect(() => {
-        async function fetchTranslation() {
-            // setLoading(true);
-            const englishText = await translateToEnglish(description);
-            setTranslatedDescription(description);
-            // setLoading(false);
-        }
-        fetchTranslation();
-    }, [description, setLoaded]);
     
-    const imageUrl = usePollinationsImage(translatedDescription, {
+    const imageUrl = usePollinationsImage(description, {
         width: 150,
         height: 150,
         seed: 4,
