@@ -16,7 +16,6 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
         if (selectedCharacter && characters) {
             const character = characters[selectedCharacter];
             const imagePrompt = character ? character.image_prompt : "No image prompt available";
-            const name = character ? character.name : "某位編輯";
             setCharacterImagePrompt(imagePrompt);
             setSelectedName(selectedCharacter);
         }
@@ -45,6 +44,24 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
             const responseText = chatData.reply;
             setIsBotTyping(false);
             setMessages((prev) => [...prev, { text: responseText, sender: "bot" }]);
+
+            // 呼叫 TTS API 將 responseText 轉為語音
+            try {
+                const ttsResponse = await fetch("http://localhost:3000/api/tts/synthesize", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text: responseText, role: selectedName }),
+                });
+                const ttsData = await ttsResponse.json();
+                if (ttsData.audioContent) {
+                    const audioContent = `data:audio/mp3;base64,${ttsData.audioContent}`;
+                    const audio = new Audio(audioContent);
+                    audio.play();
+                }
+            } catch (ttsError) {
+                console.error("Error in TTS synthesis:", ttsError);
+            }
+
         } catch (error) {
             console.error("Error in chat:", error);
             setIsBotTyping(false);
@@ -187,10 +204,3 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
 };
 
 export default ChatPage;
-
-
-
-
-
-
-
