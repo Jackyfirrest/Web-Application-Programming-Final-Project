@@ -63,7 +63,9 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
             setMessages((prev) => [
                 ...prev,
                 { text: `你抽到的塔羅牌是：${data.card}`, sender: "bot" },
-                { text: `塔羅牌解釋：${data.explanation}`, sender: "bot" },
+                { text: `愛情方面的解釋：${data.explanation1}`, sender: "bot" },
+                { text: `事業方面的解釋：${data.explanation2}`, sender: "bot" },
+                { text: `今日運勢：${data.explanation3}`, sender: "bot" },
             ]);
         } catch (error) {
             console.error("Error fetching tarot card:", error);
