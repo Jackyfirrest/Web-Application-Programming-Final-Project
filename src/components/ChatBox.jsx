@@ -94,7 +94,7 @@ const ChatBox = ({ messages, characterImagePrompt, characterImageUrl, isBotTypin
 
                                 <Box
                                     sx={{
-                                        maxWidth: "70%",
+                                        maxWidth: "60%",
                                         backgroundColor: msg.sender === "user" ? "#FFE4E1" : "#FFC0CB", // 不同訊息框的背景顏色
                                         padding: 1.5,
                                         borderRadius: 2,
@@ -128,7 +128,8 @@ const ChatBox = ({ messages, characterImagePrompt, characterImageUrl, isBotTypin
                         >
                             <Box
                                 sx={{
-                                    maxWidth: "70%",
+                                    marginLeft: "115px",
+                                    maxWidth: "60%",
                                     backgroundColor: "#FFC0CB",
                                     padding: 1.5,
                                     borderRadius: 2,
