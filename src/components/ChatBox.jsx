@@ -111,6 +111,9 @@ const ChatBox = ({ messages, characterImagePrompt, characterImageUrl, isBotTypin
                                             {msg.text}
                                         </Typography>
                                     )}
+
+
+                                    
                                 </Box>
                             </ListItem>
                         );

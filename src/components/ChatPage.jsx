@@ -109,15 +109,52 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
         }
     };
 
-    const generateImage = () => {
+    const generateImage = async () => {
         if (input.trim() === "") return;
-
+    
+        // 加入機器人回應，顯示正在處理的提示
         setMessages((prev) => [
             ...prev,
-            { text: "這是根據你的描述生成的圖片：", sender: "bot" },
-            { text: input, sender: "image" },
+            { text: input, sender: "user" },
         ]);
+    
+        setInput(""); // 清空輸入框
+        setIsBotTyping(true); // 設置機器人正在輸入狀態
+    
+        try {
+            // 向後端發送請求，傳遞輸入的描述
+            const response = await fetch("http://localhost:3000/api/image", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ description: { prompt: input } }),
+            });
+    
+            const data = await response.json();
+
+            console.log(data.refinedPrompt);
+    
+            if (data.refinedPrompt) {
+                // 添加圖片和描述到聊天框
+                setMessages((prev) => [
+                    ...prev,
+                    // { text: "這是根據你的描述生成的圖片：", sender: "bot" },
+                    { text: `${data.imaginaryResponse}`, sender: "bot" },
+                    { text: data.refinedPrompt, sender: "image" }, // 顯示圖片
+                ]);
+            } else {
+                throw new Error("無法取得圖片，請稍後再試。");
+            }
+        } catch (error) {
+            console.error("Error generating image:", error);
+            setMessages((prev) => [
+                ...prev,
+                { text: "抱歉，圖片生成失敗，請稍後再試。", sender: "bot" },
+            ]);
+        } finally {
+            setIsBotTyping(false); // 恢復機器人狀態
+        }
     };
+    
 
     return (
         <Box

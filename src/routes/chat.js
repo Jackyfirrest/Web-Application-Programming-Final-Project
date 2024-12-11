@@ -60,7 +60,7 @@ async function getCharacterDescription(characterName) {
       return characterDescription;
   } catch (error) {
         // 處理錯誤，如果是 404 錯誤或沒有返回資料
-        console.error('獲取角色資料時發生錯誤:', error);
+        // console.error('獲取角色資料時發生錯誤:', error);
         
         // 默認角色描述模板
         const defaultDescription = `
