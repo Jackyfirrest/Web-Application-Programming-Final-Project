@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ChatBox from "./ChatBox";
 import InputContainer from "./InputContainer";
 import { Box, Typography, Button } from "@mui/material";
@@ -11,6 +11,9 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
     const [selectedName, setSelectedName] = useState("某位編輯");
     const [isBotTyping, setIsBotTyping] = useState(false);
     const navigate = useNavigate();
+
+    // 用於儲存當前播放中的 Audio 實例(避免前一個聲音還沒結束結果下一個使用者回覆就來了)
+    const currentAudioRef = useRef(null);
 
     useEffect(() => {
         if (selectedCharacter && characters) {
@@ -25,6 +28,18 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
         if (event.key === "Enter") {
             sendMessage();
         }
+    };
+
+    const playAudio = (audioContent) => {
+        // 如果有音檔正在播放，先停止並清除(避免打架)
+        if (currentAudioRef.current) {
+            currentAudioRef.current.pause();
+            currentAudioRef.current = null;
+        }
+
+        const audio = new Audio(audioContent);
+        currentAudioRef.current = audio;
+        audio.play();
     };
 
     const sendMessage = async () => {
@@ -55,8 +70,7 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
                 const ttsData = await ttsResponse.json();
                 if (ttsData.audioContent) {
                     const audioContent = `data:audio/mp3;base64,${ttsData.audioContent}`;
-                    const audio = new Audio(audioContent);
-                    audio.play();
+                    playAudio(audioContent);
                 }
             } catch (ttsError) {
                 console.error("Error in TTS synthesis:", ttsError);
@@ -109,7 +123,7 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
                 display: "flex",
                 flexDirection: "column",
                 height: "100vh",
-                background: "linear-gradient(to bottom, #FFC1CC, #FF9999)", // 漸變背景
+                background: "linear-gradient(to bottom, #FFC1CC, #FF9999)",
             }}
         >
             {/* 頁面標題 */}
