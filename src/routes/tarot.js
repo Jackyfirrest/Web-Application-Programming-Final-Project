@@ -88,10 +88,18 @@ router.get('/', async (req, res) => {
     //console.log("選中的塔羅牌:", selectedCard);
 
     // 呼叫 Gemini API 生成解釋
-    const prompt = `我是你的情侶，請幫我用繁體中文解釋這張塔羅牌，必須包含愛情、事業、今日運勢，最後要有總結與建議: ${selectedCard.card}`;
+    const prompt1 = `我是你的情侶，請幫我用情侶的口氣講述這張塔羅牌在愛情方面的解釋，開頭不用講寶貝，用繁體中文: ${selectedCard.card}`;
+    const prompt2 = `我是你的情侶，請幫我用情侶的口氣講述這張塔羅牌在事業方面的解釋，開頭不用講寶貝，不用講抽到甚麼牌，用繁體中文: ${selectedCard.card}`;
+    const prompt3 = `我是你的情侶，請幫我用情侶的口氣講述這張塔羅牌在今日運勢上的解釋，用繁體中文: ${selectedCard.card}`;
     try {
-        const result = await model.generateContent(prompt);
-        const explanation = result.response.text();
+        const result1 = await model.generateContent(prompt1);
+        const explanation1 = result1.response.text();
+
+        const result2 = await model.generateContent(prompt2);
+        const explanation2 = result2.response.text();
+
+        const result3 = await model.generateContent(prompt3);
+        const explanation3 = result3.response.text();
         
         // 確認解釋是否正確
         //console.log("塔羅牌解釋:", explanation);
@@ -99,13 +107,15 @@ router.get('/', async (req, res) => {
         // 回傳卡片和解釋
         res.json({
             card: selectedCard.card,
-            explanation: explanation
+            explanation1: explanation1,
+            explanation2: explanation2,
+            explanation3: explanation3
         });
     } catch (error) {
         console.error('Error generating explanation:', error);
         res.json({
             card: selectedCard.card,
-            explanation: '無法生成塔羅牌解釋，請稍後再試。'
+            explanation: '塔羅牌有問題！'
         });
     }
 });

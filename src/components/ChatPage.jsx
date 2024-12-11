@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ChatBox from "./ChatBox";
 import InputContainer from "./InputContainer";
 import { Box, Typography, Button } from "@mui/material";
@@ -12,11 +12,13 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
     const [isBotTyping, setIsBotTyping] = useState(false);
     const navigate = useNavigate();
 
+    // 用於儲存當前播放中的 Audio 實例(避免前一個聲音還沒結束結果下一個使用者回覆就來了)
+    const currentAudioRef = useRef(null);
+
     useEffect(() => {
         if (selectedCharacter && characters) {
             const character = characters[selectedCharacter];
             const imagePrompt = character ? character.image_prompt : "No image prompt available";
-            const name = character ? character.name : "某位編輯";
             setCharacterImagePrompt(imagePrompt);
             setSelectedName(selectedCharacter);
         }
@@ -26,6 +28,18 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
         if (event.key === "Enter") {
             sendMessage();
         }
+    };
+
+    const playAudio = (audioContent) => {
+        // 如果有音檔正在播放，先停止並清除(避免打架)
+        if (currentAudioRef.current) {
+            currentAudioRef.current.pause();
+            currentAudioRef.current = null;
+        }
+
+        const audio = new Audio(audioContent);
+        currentAudioRef.current = audio;
+        audio.play();
     };
 
     const sendMessage = async () => {
@@ -45,6 +59,23 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
             const responseText = chatData.reply;
             setIsBotTyping(false);
             setMessages((prev) => [...prev, { text: responseText, sender: "bot" }]);
+
+            // 呼叫 TTS API 將 responseText 轉為語音
+            try {
+                const ttsResponse = await fetch("http://localhost:3000/api/tts/synthesize", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text: responseText, role: selectedName }),
+                });
+                const ttsData = await ttsResponse.json();
+                if (ttsData.audioContent) {
+                    const audioContent = `data:audio/mp3;base64,${ttsData.audioContent}`;
+                    playAudio(audioContent);
+                }
+            } catch (ttsError) {
+                console.error("Error in TTS synthesis:", ttsError);
+            }
+
         } catch (error) {
             console.error("Error in chat:", error);
             setIsBotTyping(false);
@@ -63,7 +94,9 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
             setMessages((prev) => [
                 ...prev,
                 { text: `你抽到的塔羅牌是：${data.card}`, sender: "bot" },
-                { text: `塔羅牌解釋：${data.explanation}`, sender: "bot" },
+                { text: `愛情方面的解釋：${data.explanation1}`, sender: "bot" },
+                { text: `事業方面的解釋：${data.explanation2}`, sender: "bot" },
+                { text: `今日運勢：${data.explanation3}`, sender: "bot" },
             ]);
         } catch (error) {
             console.error("Error fetching tarot card:", error);
@@ -92,7 +125,7 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
                 display: "flex",
                 flexDirection: "column",
                 height: "100vh",
-                background: "linear-gradient(to bottom, #FFC1CC, #FF9999)", // 漸變背景
+                background: "linear-gradient(to bottom, #FFC1CC, #FF9999)",
             }}
         >
             {/* 頁面標題 */}
@@ -187,10 +220,3 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
 };
 
 export default ChatPage;
-
-
-
-
-
-
-

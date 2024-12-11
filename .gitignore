@@ -3,6 +3,10 @@ node_modules/
 
 # .env API KEY documents
 .env
+<<<<<<< HEAD
+tts_api_key.json
+=======
+>>>>>>> 8c57ff8a7978bb9db6d756c46c3499a37d3a65d3
 
 # SQLite database files
 *.db
