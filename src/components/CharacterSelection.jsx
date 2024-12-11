@@ -5,16 +5,20 @@ import ImageComponent from './ImageComponent';
 const CharacterSelection = ({ characters, setSelectedCharacter, setCharacterImageUrl, customCard }) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
+    const [imageUrls, setImageUrls] = useState({}); // 儲存所有角色的圖片 URL
     const [showModal, setShowModal] = useState(false);
     const [customName, setCustomName] = useState('');
     const [customImageUrl, setCustomImageUrl] = useState('');
 
-    const handleSelectCharacter = (key, name, imageUrl) => {
+    // 處理選擇角色的點擊
+    const handleSelectCharacter = (key, name) => {
+        const imageUrl = imageUrls[key]; // 從狀態中獲取對應角色的圖片 URL
         setSelectedCharacter(name);
         setCharacterImageUrl(imageUrl);
         navigate('/chat');
     };
 
+    // 處理自定義角色
     const handleCustomCardClick = () => {
         setShowModal(true);
     };
@@ -42,9 +46,13 @@ const CharacterSelection = ({ characters, setSelectedCharacter, setCharacterImag
                         <div
                             key={key}
                             style={styles.card}
-                            onClick={() => handleSelectCharacter(key, character.name, character.image_url)}
+                            onClick={() => handleSelectCharacter(key, character.name)}
                         >
-                            <ImageComponent description={character.image_prompt} setLoading={setLoading} />
+                            <ImageComponent
+                                description={character.image_prompt}
+                                setLoading={setLoading}
+                                onImageLoad={(url) => setImageUrls((prev) => ({ ...prev, [key]: url }))}
+                            />
                             <h3 style={styles.cardTitle}>{character.name}</h3>
                         </div>
                     );
