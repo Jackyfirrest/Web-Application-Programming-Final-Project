@@ -136,7 +136,7 @@ router.post('/', async (req, res) => {
 
     // 將角色模板與用戶訊息合併，並作為上下文傳遞給 OpenAI API
     const response = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-4o',
       messages: [
         { role: 'system', content: characterDescription },
         { role: 'user', content: message },

@@ -18,7 +18,7 @@ const ChatPage = ({ selectedCharacter, characters, characterImageUrl }) => {
             const imagePrompt = character ? character.image_prompt : "No image prompt available";
             const name = character ? character.name : "某位編輯";
             setCharacterImagePrompt(imagePrompt);
-            setSelectedName(name);
+            setSelectedName(selectedCharacter);
         }
     }, [selectedCharacter, characters]);
 
